@@ -11,6 +11,8 @@ const connection = Knex({
     connection:{
       filename: path.resolve(__dirname,'src','database','database.sqlite')
     },
+    // useNullAsDefault : true
+    useNullAsDefault: true
 });
 
 // exportando conection

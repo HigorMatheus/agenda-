@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "nodemon src/server"
+    "dev": "nodemon src/server ",
+    "knex:migrate": " knex migrate:latest"
   },
   "keywords": [],
-  "author": "",
+  "author": "Higor Matheus",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
