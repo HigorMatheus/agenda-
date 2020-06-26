@@ -12,7 +12,7 @@ const routes = express.Router();
 // route utilizanso controller
 routes.get('/' , UserController.index);
 
-routes.post('/user' , UserController.post);
+routes.post('/user' , UserController.create);
 
 // exportando routes
 module.exports = routes;

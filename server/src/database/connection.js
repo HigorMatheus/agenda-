@@ -1,7 +1,5 @@
 // inportando o Knex 
-const Knex = require('knex')('../../knexfile');
-// const Knexfile =require
-
+const Knex = require('knex');
 // path utilizamos para lidar com caminhos dentro do nodeJS
 const path = require('path');
 
@@ -9,14 +7,12 @@ const path = require('path');
 const connection = Knex({
     client: 'sqlite3',
     connection:{
-      filename: path.resolve(__dirname,'src','database','database.sqlite')
+      filename: path.resolve(__dirname,'database.sqlite3')
     },
     // useNullAsDefault : true
     useNullAsDefault: true
 });
-
 // exportando conection
 module.exports = connection;
-
 
 // Migrations = historico de alteraçoes do banco de dados 
