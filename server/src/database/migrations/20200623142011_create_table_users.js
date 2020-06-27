@@ -1,5 +1,4 @@
 
-
 exports.up = function(knex) {
   //CRIAR UMA TABELA 
   return knex.schema.createTable('users',function(table){
@@ -11,14 +10,6 @@ exports.up = function(knex) {
     table.string('confirma_senha').notNullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
-    // table.increments('id').primary();
-    // table.string('name');
-    // table.string('telephone');
-    // table.string('email ');
-    // table.string('senha ');
-    // table.string('confirma_senha');
-    // table.timestamp('created_at').defaultTo(knex.fn.now());
-    // table.timestamp('updated_at').defaultTo(knex.fn.now());
   });
 };
 
