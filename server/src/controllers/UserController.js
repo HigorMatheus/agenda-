@@ -9,8 +9,9 @@ const UserController = {
         return res.json(results);
       });
     },
+
     // criando um usuario 
-    async create( req,res, next){
+    async create( req,res){
 
       // console.log(req.body)
       const{
@@ -33,7 +34,7 @@ const UserController = {
     
     },
     
-    //fazendo uma alteração de um usuario
+    // alterando um usuario
     async update(req,res){
       const{
         name,
@@ -52,6 +53,14 @@ const UserController = {
         confirma_senha,
       }).where({id})
       return res.json(res.body)
+    },
+    
+    //deletando um usuario 
+    async destroy(req,res){
+      const {id} = req.params
+
+      await connection('users').where({id}).del()
+      return res.json({mensagem: "usuario deletado com sucesso"})
     }
 }
 

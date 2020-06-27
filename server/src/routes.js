@@ -16,6 +16,8 @@ routes.post('/user' , UserController.create);
 routes.get('/user' , UserController.index);
 // router para editar um  usuario
 routes.put('/user/:id' , UserController.update);
+// router para deletar um  usuario
+routes.delete('/user/:id' , UserController.destroy);
 
 // exportando routes
 module.exports = routes;
