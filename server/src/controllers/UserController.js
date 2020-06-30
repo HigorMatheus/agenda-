@@ -1,37 +1,43 @@
 // const express = require('express');
 const connection = require('../database/connection');
 
+// utilizamos para criptografar senha 
+const crypto = require('crypto')
+
+const ProductController = require('./ProductController');
 
 const UserController = {
     // visualizar todos os uduarios 
     async index (req,res){
       connection('users').then((results)=>{
+     
         return res.json(results);
       });
     },
 
     // criando um usuario 
     async create( req,res){
-
       // console.log(req.body)
-      const{
-        name,
-        telephone,
-        email,
-        senha,
-        confirma_senha,
-      } = req.body;
-
-      await connection('users').insert({
-        name,
-        telephone,
-        email,
-        senha,
-        confirma_senha,
-      });
-  
-      return res.json(res.body);
     
+      name= req.body.name;
+      telephone = req.body.telephone;
+      email= req.body.email;
+      senha = req.body.senha;
+      confirma_senha= req.body.confirma_senha;
+
+      const secret = senha;
+      const hash = crypto.createHmac('sha256', secret)
+      .update('I love cupcakes')
+      .digest('hex');
+
+      await connection('users').insert( {
+        name,
+        telephone,
+        email,
+        senha: hash,
+        confirma_senha,
+      } )
+      return res.json(res.body)
     },
     
     // alterando um usuario

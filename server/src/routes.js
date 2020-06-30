@@ -1,5 +1,6 @@
 const express = require('express');
 const UserController = require('./controllers/UserController');
+const ProductController = require('./controllers/ProductController');
 
 //configurando rotas 
 const routes = express.Router();
@@ -18,6 +19,15 @@ routes.get('/user' , UserController.index);
 routes.put('/user/:id' , UserController.update);
 // router para deletar um  usuario
 routes.delete('/user/:id' , UserController.destroy);
+
+// router de cadastro de ptoduct
+routes.post('/product' , ProductController.create);
+// // router para visualizar os ptoducts 
+routes.get('/product' , ProductController.index);
+// // router para editar um  ptoduct
+// routes.put('/product/:id' , ProductController.update);
+// // router para deletar um  ptoduct
+// routes.delete('/product/:id' , ProductController.destroy);
 
 // exportando routes
 module.exports = routes;
