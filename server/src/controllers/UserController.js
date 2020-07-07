@@ -3,7 +3,19 @@ const connection = require('../database/connection');
 // utilizamos para criptografar senha 
 const bcrypt = require('bcryptjs')
 
-const generateAuthToken = require('jsonwebtoken')
+// const generateAuthToken = require('../config/generateAuthToken');
+// const jwt = require('jsonwebtoken')
+const authConfig = require('../config/auth.json');
+const jwt = require('jsonwebtoken');
+
+  // gerando um JsonWebToken para Authenticação
+    function generateToken( params){
+      return jwt.sign( params, authConfig.secret,{
+        // exprirando em um dia 
+        expiresIn: 86400,
+      })
+    }
+
 
 const UserController = {
 
@@ -18,7 +30,7 @@ const UserController = {
 
     // criando um usuario 
     async create( req,res){
-      // console.log(req.body)
+        // console.log(req.body)
       name= req.body.name;
       telephone = req.body.telephone;
       email= req.body.email;
@@ -31,16 +43,23 @@ const UserController = {
               req.json('erro ao salvar usuario')
               res.redirect("/")
             }
-             await connection.table('users').insert( {
+           const user =  await connection.table('users').insert( {
               name,
               telephone,
               email,
               senha: hash,
               confirma_senha,
             } );
-            return res.json( req.body );
+            const data = {
+              name : req.body.name,
+              telephone: req.body.telephone,
+              email: req.body.email,
+              token : generateToken({ id: user.id})
+            }
+            return res.status(200).json(data);
           });
         });
+      
     },
 
     // authentcation user
@@ -60,27 +79,14 @@ const UserController = {
         if(!isSenha){
           return res.status(401).json({mensagem: 'senha incorreta '})
         }
-        
-        //inportando function para gerar JsonWebToken
-        // const token = generateAuthToken(user[0])
-        // const checkUser = await connection.table('tokens').where({user_id: user[0].id});
 
-        // if (checkUser && checkUser.length > 0) {
-        //   await connection.table('tokens').where({user_id: user[0].id}).update({token});
-        // } else {
-        //   await connection.table('tokens').insert({user_id: user[0].id, token});
-        // }
         const data = {
           name: user[0].name,
           telephone: user[0].telephone,
           email: user[0].email,
-          // token
+          token : generateToken({ id: user.id})
         }
-
         return res.status(200).json(data);
-      // } catch (error) {
-      //   // return res.status(500).json({ message: `${JSON.stringify(error)}` });
-      // }
   },
 
 
@@ -110,38 +116,3 @@ const UserController = {
 }
 
 module.exports = UserController;
-
- // criprografando 
-                // const secret = senha;
-                // const hash = crypto.createHmac('sha256', secret)
-                // // .update('I love cupcakes')
-                // .digest('hex');
-
-
-//  await connection.table('users').whereExists(function() {
-    //     this.select('email').from().where( email).then(user=>{
-    //       return console.log(user)
-    //     });
-        
-    //   })
-      // try {
-      //     if ( await connection.findOne({email})) return res.status(400).send({error: 'Usiario já existe'})
-      //       const usuario = await connection.table('users').create({ name, telephone, email, senha: hash, confirma_senha, })
-      //   usuario.senha = undefined;
-      //   return res.send({ Sucesso:' Usuário cadastrado com sucesso!'})
-      // } catch (err) {
-      //   console.log(err)
-      //   return res.status(400).send({Erro: 'Erro ao cadastra usuario '})
-      // }
-
-          // await await connection.select('email').table('users').then(mail =>{
-          //     var maill = mail.find()
-          //     // maill.forEach( user =>{
-          //         var gmail = mail.email
-          //         if ( email != gmail)  {
-          //            console.log( gmail,email, {mensagem: " cadastrado com sussesso"})
-          //         } else {
-          //            console.log( gmail,email,{ mensagem: "usuario ja cadastrado "})
-          //         }
-          //     // })
-          // });
