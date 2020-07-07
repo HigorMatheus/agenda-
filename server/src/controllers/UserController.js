@@ -4,7 +4,6 @@ const connection = require('../database/connection');
 const bcrypt = require('bcryptjs')
 
 // const generateAuthToken = require('../config/generateAuthToken');
-// const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth.json');
 const jwt = require('jsonwebtoken');
 
@@ -107,6 +106,7 @@ const UserController = {
     //deletando um usuario 
     async destroy(req,res){
       // selecionando um usuario 
+      
       const {id} = req.params
       // delerando um usuario
       await connection('users').where({id}).del()
