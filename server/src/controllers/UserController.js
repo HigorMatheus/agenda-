@@ -3,18 +3,8 @@ const connection = require('../database/connection');
 // utilizamos para criptografar senha 
 const bcrypt = require('bcryptjs')
 
-// const generateAuthToken = require('../config/generateAuthToken');
-const authConfig = require('../config/auth.json');
-const jwt = require('jsonwebtoken');
-
-  // gerando um JsonWebToken para Authenticação
-    function generateToken( params){
-      return jwt.sign( params, authConfig.secret,{
-        // exprirando em um dia 
-        expiresIn: 86400,
-      })
-    }
-
+//inportando function de token 
+const generateToken = require('../config/generateToken');
 
 const UserController = {
 
@@ -28,37 +18,52 @@ const UserController = {
     },
 
     // criando um usuario 
-    async create( req,res){
-        // console.log(req.body)
-      name= req.body.name;
-      telephone = req.body.telephone;
-      email= req.body.email;
-      senha = req.body.senha;
-      confirma_senha= req.body.confirma_senha;
+    async create( req,res, next ){
+        try {
+            // console.log(req.body)
+          name= req.body.name;
+          telephone = req.body.telephone;
+          email= req.body.email;
+          senha = req.body.senha;
+          confirma_senha= req.body.confirma_senha;
+          
+          // buscando os email no banco de dados 
+        const user = await connection.table('users').where({email});
+        //informado que o email não esta cadastrado 
+        if( user ){
+          return  res.status(401).json({mensagem: 'Usuario ja cadastrado'})
+        }
 
-      bcrypt.genSalt(10, (erro, salt)=>{
-          bcrypt.hash(senha,salt, async (erro,hash)=>{
-            if(erro){
-              req.json('erro ao salvar usuario')
-              res.redirect("/")
-            }
-           const user =  await connection.table('users').insert( {
-              name,
-              telephone,
-              email,
-              senha: hash,
-              confirma_senha,
-            } );
-            const data = {
-              name : req.body.name,
-              telephone: req.body.telephone,
-              email: req.body.email,
-              token : generateToken({ id: user.id})
-            }
-            return res.status(200).json(data);
-          });
-        });
-      
+          bcrypt.genSalt(10, (error, salt)=>{
+              bcrypt.hash(senha,salt, async (error,hash)=>{
+                if(error){
+                  req.json('erro ao salvar usuario')
+                  res.redirect("/")
+                }
+              // const user istanciando user que esta sendo criado 
+              const user =  await connection.table('users').insert( {
+                  name,
+                  telephone,
+                  email,
+                  senha: hash,
+                  confirma_senha,
+                } );
+                //informando dados para o front end 
+                const data = {
+                  id: user[0].id,
+                  name : req.body.name,
+                  telephone: req.body.telephone,
+                  email: req.body.email,
+                  //informando o token para autorizaçao do usuario 
+                  token : generateToken({ id: user.id})
+                }
+                //status 201 criado ok 
+                return res.status(201).json(data);
+              });
+            });
+        } catch (error) {
+          next(error)
+        }
     },
 
     // authentcation user
@@ -66,7 +71,7 @@ const UserController = {
       // try {
         // recebendo parametros do formulario
         const{ email, senha}= await req.body;
-        //verificando se existe o email no banco de dados 
+        // buscando os email no banco de dados 
         const user = await connection.table('users').where({email});
         //informado que o email não esta cadastrado 
         if(!user || (user && user.length == 0)){
@@ -80,6 +85,7 @@ const UserController = {
         }
 
         const data = {
+          user: user[0].id,
           name: user[0].name,
           telephone: user[0].telephone,
           email: user[0].email,

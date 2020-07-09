@@ -1,3 +1,4 @@
-agenda
 node_modules
 mobile
+*.sqlite3
+auth.json

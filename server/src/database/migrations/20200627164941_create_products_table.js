@@ -12,7 +12,8 @@ exports.up = function(knex) {
         .references('users.id')
         .notNullable()
         //quando deletar um usuario tbem deletar os produtos deste usuario
-        .onDelete('CASCADE');
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
       table.timestamp('created_at').defaultTo(knex.fn.now());
       table.timestamp('updated_at').defaultTo(knex.fn.now());
     });

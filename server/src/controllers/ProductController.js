@@ -27,7 +27,7 @@ const ProductController={
           imagem,
           descricao,
           valor,
-          user_id,
+          user_id
         } = req.body;
         await connection('products').insert({
             name,
@@ -36,7 +36,7 @@ const ProductController={
             valor,
             user_id,
         });
-        return res.json(res.body);
+        return res.json(req.body);
       },
           // alterando um usuario
     async update(req,res){
