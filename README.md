@@ -21,7 +21,7 @@ npm rum dev
 ### utilizaçao da API  api com Insominia 
 
 ### baixe o sorfitware Insominia para verificar o funcionamento da API 
-See [Repositorio front end](https://insomnia.rest/)
+See [insomnia](https://insomnia.rest/)
 
 #### rotas para utilizaçao no  texte no Insominia 
 
