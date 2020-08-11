@@ -7,8 +7,14 @@ const bodyParser = require('body-parser');
 //inportando rotas
 const routes =require('./routes');
 
+// cros serva para autorizar outros servicos a utilizar a api 
+const cros = require('cors')
+
 // iniciando uma api
 const app = express();
+
+// autorizando 
+app.use(cros());
 
 // para receber e emviar informaçoes em Json 
 app.use(bodyParser.json());
@@ -17,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
 
 // utilizando as rotas da api 
-app.use('/',routes);
+app.use(routes);
 
 
 // notFund 

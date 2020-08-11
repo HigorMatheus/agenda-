@@ -7,12 +7,14 @@ See [Repositorio front end](https://github.com). -->
 
 ## Instale as dependencias
 ```bash
-npm install
+yarn
+npm install nodemon -D
 ```
 ## inicie o banco de dados 
 ```bash
 npx knex migrate:latest
 ```
+# crie um arquivo auth.json na pasta src/config comforme o exemplo que esta na pasta 
 
 ### inicie o funcionamento da API
 ```bash

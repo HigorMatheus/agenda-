@@ -5,9 +5,9 @@ exports.up = function(knex) {
     table.increments('id').primary();
     table.string('name').notNullable();
     table.string('telephone').notNullable();
-    table.string('email ').notNullable().unique();
-    table.string('senha').notNullable();
-    table.string('confirma_senha').notNullable();
+    table.string('email').notNullable().unique();
+    table.string('password').notNullable();
+    table.string('confirma_password').notNullable();
   });
 };
 

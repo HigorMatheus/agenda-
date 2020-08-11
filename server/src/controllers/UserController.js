@@ -1,6 +1,6 @@
 // importando conexão com banco de dados 
 const connection = require('../database/connection');
-// utilizamos para criptografar senha 
+// utilizamos para criptografar password 
 const bcrypt = require('bcryptjs')
 
 //inportando function de token 
@@ -19,13 +19,13 @@ const UserController = {
 
     // criando um usuario 
     async create( req,res, next ){
-        try {
+        // try {
             // console.log(req.body)
           name= req.body.name;
           telephone = req.body.telephone;
           email= req.body.email;
-          senha = req.body.senha;
-          confirma_senha= req.body.confirma_senha;
+          password = req.body.password;
+          confirma_password= req.body.confirma_password;
           
           // buscando os email no banco de dados 
         const user = await connection.table('users').where({email});
@@ -35,7 +35,7 @@ const UserController = {
         }
 
           bcrypt.genSalt(10, (error, salt)=>{
-              bcrypt.hash(senha,salt, async (error,hash)=>{
+              bcrypt.hash( password ,salt, async (error,hash)=>{
                 if(error){
                   req.json('erro ao salvar usuario')
                   res.redirect("/")
@@ -45,8 +45,8 @@ const UserController = {
                   name,
                   telephone,
                   email,
-                  senha: hash,
-                  confirma_senha,
+                  password: hash,
+                  confirma_password,
                 } );
                 //informando dados para o front end 
                 const data = {
@@ -58,30 +58,30 @@ const UserController = {
                   token : generateToken({ id: user.id})
                 }
                 //status 201 criado ok 
-                return res.status(201).json(data);
+                return res.status(201).json({data});
               });
             });
-        } catch (error) {
-          next(error)
-        }
+        // } catch (error) {
+        //   next(error)
+        // }
     },
 
     // authentcation user
     async auth(req, res, next){
-      // try {
+    //  return  res.json({ola })
         // recebendo parametros do formulario
-        const{ email, senha}= await req.body;
+        const{ email, password}= await req.body;
         // buscando os email no banco de dados 
         const user = await connection.table('users').where({email});
         //informado que o email não esta cadastrado 
         if(!user || (user && user.length == 0)){
           return  res.status(401).json({mensagem: 'Email nao cadastrado'})
         }
-        //verificando se a senha esta correta 
-        const isSenha = await bcrypt.compare( senha, user[0].senha);
-        //informando que a senha esta incorreta 
-        if(!isSenha){
-          return res.status(401).json({mensagem: 'senha incorreta '})
+        //verificando se a password esta correta 
+        const ispassword = await bcrypt.compare( password, user[0].password);
+        //informando que a password esta incorreta 
+        if(!ispassword){
+          return res.status(401).json({mensagem: 'password incorreta '})
         }
 
         const data = {
@@ -97,14 +97,14 @@ const UserController = {
 
     // alterando um usuario
     async update(req,res){
-      const{ name, telephone, email, senha } = req.body;
+      const{ name, telephone, email, password } = req.body;
       const{id} = req.params
 
       await connection('users').update({
         name,
         telephone,
         email,
-        senha,
+        password,
       }).where({id})
       return res.json(res.body)
     },

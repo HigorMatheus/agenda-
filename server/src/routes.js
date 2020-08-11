@@ -6,7 +6,6 @@ const ProductsController = require('./Controllers/ProductController');
 
 //configurando rotas 
 const routes = express.Router();
-
 // router de cadastro de usuario
 routes.post('/user' , UserController.create);
 // router para login 
