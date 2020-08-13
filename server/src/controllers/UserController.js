@@ -27,12 +27,6 @@ const UserController = {
           password = req.body.password;
           confirma_password= req.body.confirma_password;
           
-          // buscando os email no banco de dados 
-        const user = await connection.table('users').where({email});
-        //informado que o email não esta cadastrado 
-        if( user ){
-          return  res.status(401).json({mensagem: 'Usuario ja cadastrado'})
-        }
 
           bcrypt.genSalt(10, (error, salt)=>{
               bcrypt.hash( password ,salt, async (error,hash)=>{

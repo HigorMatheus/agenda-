@@ -6,20 +6,12 @@ const path = require('path');
 module.exports = {
 
   development: {
-    // client: 'sqlite3',
-    // connection: {
-    //   // determinando o nome e a localizaçao do arquivo de DB
-    //   // filename: './src/database/database.sqlite3'
-    //   // determinando o nome e a localizaçao do arquivo de DB para rodar em qualquer sistema
-    //   filename: path.resolve(__dirname, 'src', 'database','database.sqlite3')
-    // },
-
-    client: 'mysql',
+    client: 'sqlite3',
     connection: {
-      host : '127.0.0.1',
-      user : 'root',
-      password : '',
-      database : 'motos'
+      // determinando o nome e a localizaçao do arquivo de DB
+      // filename: './src/database/database.sqlite3'
+      // determinando o nome e a localizaçao do arquivo de DB para rodar em qualquer sistema
+      filename: path.resolve(__dirname, 'src', 'database','database.sqlite3')
     },
     migrations: {
       tableName: 'knex_migrations',
