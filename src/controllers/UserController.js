@@ -27,6 +27,9 @@ const UserController = {
           password = req.body.password;
           confirma_password= req.body.confirma_password;
           
+          if (password != confirma_password) {
+            return  res.json({mensagem: 'as senhas nao batem'})
+            }
 
           bcrypt.genSalt(10, (error, salt)=>{
               bcrypt.hash( password ,salt, async (error,hash)=>{

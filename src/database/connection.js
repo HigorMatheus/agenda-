@@ -11,13 +11,7 @@ const connection = Knex({
     },
     // useNullAsDefault : true
     useNullAsDefault: true
-    // client: 'mysql',
-    // connection: {
-    //   host : '127.0.0.1',
-    //   user : 'root',
-    //   password : '',
-    //   database : 'motos'
-    // }
+
 });
 // exportando conection
 module.exports = connection;

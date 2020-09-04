@@ -7,7 +7,6 @@ exports.up = function(knex) {
     table.string('telephone').notNullable();
     table.string('email').notNullable().unique();
     table.string('password').notNullable();
-    table.string('confirma_password').notNullable();
   });
 };
 
