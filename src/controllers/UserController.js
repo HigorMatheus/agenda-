@@ -1,5 +1,5 @@
 // importando conexão com banco de dados 
-const connection = require('../database/connection');
+const DataBase = require('../database/ConectDB');
 // utilizamos para criptografar password 
 const bcrypt = require('bcryptjs')
 
@@ -10,8 +10,10 @@ const UserController = {
 
     // visualizar todos os usuarios 
     async index (req,res){
- 
-        connection.select( 'id','name','email','telephone').table('users').then((results)=>{
+          const user = req.userId
+
+          console.log(user);
+        DataBase.select( 'id','name','email','telephone').table('users').then((results)=>{
           return res.json(results)
         })
 
@@ -38,21 +40,20 @@ const UserController = {
                   res.redirect("/")
                 }
               // const user istanciando user que esta sendo criado 
-              const user =  await connection.table('users').insert( {
+              const user =  await DataBase.table('users').insert( {
                   name,
                   telephone,
                   email,
                   password: hash,
-                  confirma_password,
                 } );
                 //informando dados para o front end 
                 const data = {
-                  id: user[0].id,
+                  // id: user[0],
                   name : req.body.name,
                   telephone: req.body.telephone,
                   email: req.body.email,
                   //informando o token para autorizaçao do usuario 
-                  token : generateToken({ id: user.id})
+                  token : generateToken({ id: user[0] })
                 }
                 //status 201 criado ok 
                 return res.status(201).json({data});
@@ -69,7 +70,7 @@ const UserController = {
         // recebendo parametros do formulario
         const{ email, password}= await req.body;
         // buscando os email no banco de dados 
-        const user = await connection.table('users').where({email});
+        const user = await DataBase.table('users').where({email});
         //informado que o email não esta cadastrado 
         if(!user || (user && user.length == 0)){
           return  res.status(401).json({mensagem: 'Email nao cadastrado'})
@@ -82,11 +83,11 @@ const UserController = {
         }
 
         const data = {
-          user: user[0].id,
+          // id: user[0].id,
           name: user[0].name,
           telephone: user[0].telephone,
           email: user[0].email,
-          token : generateToken({ id: user.id})
+          token : generateToken({ id: user[0].id})
         }
         return res.status(200).json(data);
   },
@@ -97,7 +98,7 @@ const UserController = {
       const{ name, telephone, email, password } = req.body;
       const{id} = req.params
 
-      await connection('users').update({
+      await DataBase.table('users').update({
         name,
         telephone,
         email,
@@ -112,7 +113,7 @@ const UserController = {
       
       const {id} = req.params
       // delerando um usuario
-      await connection('users').where({id}).del()
+      await DataBase('users').where({id}).del()
 
       return res.json({mensagem: "usuario deletado com sucesso"})
     }

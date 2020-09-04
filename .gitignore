@@ -1,5 +1,8 @@
 node_modules
 mobile
 *.sqlite3
-auth.json
+Auth.json
 server
+
+conectDB.js
+Knexfile.js

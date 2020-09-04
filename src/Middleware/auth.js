@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const authConfig = require('../config/auth.json')
 
 module.exports = (req,res,next) => {
@@ -28,8 +27,8 @@ module.exports = (req,res,next) => {
       if (err) return res.status(401).send({ error: 'Token invalido'});
 
       // // repasando autorizaçao
-      req.userId = decoded
-// console.log(req.userId)
+      req.userId = decoded.id
+
       // autoridado
       return next()
     })

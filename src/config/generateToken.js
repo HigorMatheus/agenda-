@@ -1,4 +1,4 @@
-const authConfig = require('./auth.json');
+const authConfig = require('./Auth.json');
 const jwt = require('jsonwebtoken');
  // gerando um JsonWebToken para Authenticação
  function generateToken( params){
